@@ -4,12 +4,10 @@ import { useSession, signOut } from "next-auth/react";
 const Dashboard = () => {
   const { data: session, status } = useSession();
 
-  // If the session is still being loaded
   if (status === "loading") {
     return <p className="text-center text-lg text-gray-400">Loading...</p>;
   }
 
-  // If the user is not logged in
   if (!session) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white">
@@ -19,10 +17,10 @@ const Dashboard = () => {
     );
   }
 
-  // Determine if the user logged in via a provider (e.g., Google/Facebook) or manually
+  
   const isProviderLogin = session.provider === "google" || session.provider === "facebook";
 
-  // If the user is logged in
+  
   return (
     <div className="min-h-screen bg-gray-800 text-white">
       <header className="bg-gray-900 text-white py-4 shadow-lg">

@@ -27,7 +27,7 @@ export default function Signup() {
         throw new Error(await response.text());
       }
       
-      toast.success("Signup successful"); // Using toast for success
+      toast.success("Signup successful"); 
       setTimeout(() => {
         router.push("/login");
       }, 1000); 

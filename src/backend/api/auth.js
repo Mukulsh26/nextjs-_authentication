@@ -5,7 +5,6 @@ export const signup = async ({ name, email, password }) => {
   const client = await clientPromise;
   const db = client.db();
 
-  // Check if the user already exists
   const existingUser = await db.collection("users").findOne({ email });
   if (existingUser) {
     throw new Error("Email already exists");
@@ -27,14 +26,14 @@ export const login = async ({ email, password }) => {
   const client = await clientPromise;
   const db = client.db();
 
-  // Find user by email
+  
   const user = await db.collection("users").findOne({ email });
   if (!user) {
     console.error("User not found with email:", email);
     throw new Error("Invalid email or password");
   }
 
-  // Verify the password
+  
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) {
     console.error("Password mismatch for email:", email);
