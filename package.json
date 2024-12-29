@@ -21,7 +21,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.2",
-    "mongoose": "^8.9.2",
+    "mongoose": "^7.0.0",
     "my-auth-app": "file:",
     "next": "15.1.2",
     "next-auth": "^4.24.11",
