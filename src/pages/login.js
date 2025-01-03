@@ -11,8 +11,8 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [isMagicLink, setIsMagicLink] = useState(false);
   const router = useRouter();
+  const { callbackUrl } = router.query;
 
-  // Handle regular email/password login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -27,15 +27,15 @@ export default function Login() {
     } else {
       toast.success("Signin successful");
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push(callbackUrl || "/");
       }, 1000);
     }
   };
 
-  // Handle Google login
+
   const handleGoogleSignIn = async () => {
     try {
-      await signIn("google", { callbackUrl: "/dashboard" });
+      await signIn("google", { callbackUrl: callbackUrl || "/" });
     } catch (err) {
       setError("Failed to sign in with Google. Please try again.");
     }
@@ -44,12 +44,13 @@ export default function Login() {
   // Handle Facebook login
   const handleFacebookSignIn = async () => {
     try {
-      await signIn("facebook", { callbackUrl: "/dashboard" });
+      await signIn("facebook", { callbackUrl: callbackUrl || "/" });
     } catch (err) {
       setError("Failed to sign in with Facebook. Please try again.");
     }
   };
-  
+
+  // Handle Magic Link login
   const handleMagicLinkSubmit = async (e) => {
     e.preventDefault();
     const res = await signIn("email", { email, redirect: false });
@@ -64,9 +65,8 @@ export default function Login() {
   return (
     <Layout>
       <div className="max-w-md mx-auto mt-10 p-8 rounded-lg bg-gray-800 text-white shadow-lg">
-        <h1 className="text-3xl font-bold text-center mb-6">Log In</h1>
+        <h1 className="text-3xl font-bold text-center mb-6">Sign In</h1>
 
-        {/* Toggle between Magic Link and Email/Password login */}
         {isMagicLink ? (
           <form onSubmit={handleMagicLinkSubmit} className="space-y-6">
             <input
@@ -85,7 +85,7 @@ export default function Login() {
               onClick={() => setIsMagicLink(false)}
               className="text-center mt-6 text-blue-400 hover:text-blue-500 cursor-pointer"
             >
-              Back to login with password
+              Back to signin with password
             </p>
           </form>
         ) : (
@@ -108,26 +108,16 @@ export default function Login() {
             />
             {error && <p className="text-red-500">{error}</p>}
             <button type="submit" className="w-full bg-blue-600 p-3 rounded">
-              Log In
+              Sign In
             </button>
             <p
               onClick={() => setIsMagicLink(true)}
               className="text-center mt-6 text-blue-400 hover:text-blue-500 cursor-pointer"
             >
-              Forgot your password? Login with magic link
+              Forgot your password? Signin with magic link
             </p>
           </form>
         )}
-
-<p className="text-center mt-6 text-gray-400">
-          Don’t have an account?{" "}
-          <a
-            href="/"
-            className="text-blue-400 hover:text-blue-500 hover:underline"
-          >
-            Sign Up
-          </a>
-        </p>
 
         <div className="my-8">
           <p className="text-center text-gray-400">Or connect with</p>
@@ -135,13 +125,13 @@ export default function Login() {
             onClick={handleGoogleSignIn}
             className="w-full mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-lg"
           >
-            Log in with Google
+            Sign in with Google
           </button>
           <button
             onClick={handleFacebookSignIn}
             className="w-full mt-4 bg-blue-800 hover:bg-blue-900 text-white font-bold py-3 rounded-lg"
           >
-            Log in with Facebook
+            Sign in with Facebook
           </button>
         </div>
       </div>
